@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot Demo</title>
+  </head>
+  <body>
+    <h1>Chatbot Demo</h1>
+    <div id="chat-container">
+      <div id="chat-log">
+        <p>Welcome to the chatbot demo! Type your message below and press Enter to start chatting.</p>
+      </div>
+      <div id="chat-form">
+        <input type="text" id="chat-input" placeholder="Type your message here...">
+      </div>
+    </div>
+    <script>
+      // Get references to HTML elements
+      var chatLog = document.getElementById('chat-log');
+      var chatInput = document.getElementById('chat-input');
+
+      // Handle form submission
+      document.getElementById('chat-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // prevent form from submitting
+        var userMessage = chatInput.value.trim();
+        if (userMessage) {
+          // Display user message in chat log
+          var userMessageElement = document.createElement('p');
+          userMessageElement.className = 'user-message';
+          userMessageElement.innerText = userMessage;
+          chatLog.appendChild(userMessageElement);
+
+          // Send user message to server and get chatbot response
+          var request = new XMLHttpRequest();
+          request.open('POST', '/chatbot');
+          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          request.onload = function() {
+            if (request.status === 200) {
+              // Display chatbot response in chat log
+              var chatbotMessageElement = document.createElement('p');
+              chatbotMessageElement.className = 'chatbot-message';
+              chatbotMessageElement.innerText = request.responseText;
+              chatLog.appendChild(chatbotMessageElement);
+
+              // Clear chat input
+              chatInput.value = '';
+            }
+          };
+          request.send('user_input=' + encodeURIComponent(userMessage));
+        }
+      });
+    </script>
+  </body>
+</html>

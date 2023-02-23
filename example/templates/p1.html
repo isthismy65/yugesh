@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Example</title>
+    <style>
+        /* Style for the chatbot container */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 400px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        /* Style for the chatbot header */
+        .chatbot-header {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            border-bottom: 1px solid gray;
+        }
+        
+        /* Style for the chatbot messages */
+        .chatbot-messages {
+            height: 300px;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+        
+        /* Style for the chatbot input */
+        .chatbot-input {
+            width: 100%;
+            border: none;
+            border-top: 1px solid gray;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+        }
+        
+        /* Style for the chatbot send button */
+        .chatbot-send-button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-top: 1px solid gray;
+            border-radius: 0 0 5px 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <div class="chatbot-header">Chatbot</div>
+        <div class="chatbot-messages">
+            <p>Hello! How can I help you today?</p>
+        </div>
+        <textarea class="chatbot-input" placeholder="Type your message here..."></textarea>
+        <button class="chatbot-send-button">Send</button>
+    </div>
+
+    <script>
+        const messagesContainer = document.querySelector('.chatbot-messages');
+        const inputField = document.querySelector('.chatbot-input');
+        const sendButton = document.querySelector('.chatbot-send-button');
+
+        sendButton.addEventListener('click', () => {
+            const message = inputField.value;
+            inputField.value = '';
+            appendMessage(message, true);
+            // You can use AJAX or any other method to send the message to the server and receive a response here
+            // For this example, we'll just respond with a generic message
+            setTimeout(() => appendMessage('Sorry, I did not understand that. Please try again.', false), 1000);
+        });
+
+        function appendMessage(message, isUser) {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('chatbot-message-container');
+            if (isUser) {
+                messageContainer.classList.add('user');
+            } else {
+                messageContainer.classList.add('chatbot');
+            }
+
+            const messageElement = document.createElement('p');
+            messageElement.textContent = message;
+
+            messageContainer.appendChild(messageElement);
+            messagesContainer.appendChild(messageContainer);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
